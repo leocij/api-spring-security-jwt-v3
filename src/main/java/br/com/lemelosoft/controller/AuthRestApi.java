@@ -28,9 +28,11 @@ import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
+import static br.com.lemelosoft.util.MyConstant.API_V1;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(API_V1 + "/auth")
 public class AuthRestApi {
 
     private AuthenticationManager authenticationManager;
