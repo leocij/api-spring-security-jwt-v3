@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -37,27 +38,27 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<String> post(@RequestBody Task task) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void post(@RequestBody Task task) {
         this.taskService.createTask(task);
-        return new ResponseEntity<>("Task registered successfully.", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         boolean deleteById = this.taskService.deleteById(id);
         if (deleteById) {
-            return new ResponseEntity<>("Task deleted successfully.", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> patch(@PathVariable Long id, @RequestBody Map<String, String> update) {
-
+    public ResponseEntity<?> patch(@PathVariable Long id, @RequestBody Map<String, String> update) {
         boolean patchedById = this.taskService.patch(id, update.get("task"));
         if (patchedById) {
-            return new ResponseEntity<>("Task patched successfully.", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
